@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucas & Sara — Mapa de Mesas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #B8976A;
+    --gold-light: #E8D5B0;
+    --gold-pale: #F7F0E3;
+    --dark: #1C1612;
+    --text: #2E2419;
+    --muted: #7A6A56;
+    --border: rgba(184,151,106,0.25);
+    --border-strong: rgba(184,151,106,0.5);
+    --bg: #FDFAF5;
+    --card: #FFFFFF;
+    --radius: 12px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 3.5rem 1.5rem 2.5rem;
+    background: linear-gradient(180deg, #F0E6D0 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-ornament {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(0.85rem, 2vw, 1rem);
+    color: var(--gold);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.4rem, 8vw, 4.2rem);
+    color: var(--dark);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    margin-top: 1rem;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  /* SEARCH */
+  .search-wrap {
+    max-width: 600px;
+    margin: 2rem auto 0;
+    padding: 0 1.5rem;
+  }
+
+  .search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--card);
+    border: 1px solid var(--border-strong);
+    border-radius: 50px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+
+  .search-box:focus-within {
+    box-shadow: 0 0 0 3px rgba(184,151,106,0.18);
+    border-color: var(--gold);
+  }
+
+  .search-icon {
+    padding: 0 0 0 1.25rem;
+    color: var(--gold);
+    font-size: 1.1rem;
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+
+  .search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0.95rem 1rem;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+  }
+
+  .search-box input::placeholder { color: var(--muted); }
+
+  .clear-btn {
+    border: none;
+    background: none;
+    padding: 0.95rem 1.25rem;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1;
+    transition: color 0.15s;
+  }
+  .clear-btn:hover { color: var(--gold); }
+
+  /* RESULTS */
+  .results {
+    max-width: 720px;
+    margin: 1.5rem auto 0;
+    padding: 0 1.5rem;
+  }
+
+  .results-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .result-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .result-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: 0 2px 16px rgba(184,151,106,0.1);
+  }
+
+  .result-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .mesa-badge {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--gold-pale);
+    border: 1.5px solid var(--border-strong);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .mesa-badge .label {
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--gold);
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .mesa-badge .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--dark);
+    line-height: 1;
+  }
+
+  .result-info { flex: 1; min-width: 0; }
+
+  .result-name {
+    font-size: 0.98rem;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .result-name mark {
+    background: none;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .result-meta {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .chevron {
+    flex-shrink: 0;
+    color: var(--gold);
+    font-size: 0.85rem;
+    transition: transform 0.2s;
+  }
+
+  .result-card.open .chevron { transform: rotate(180deg); }
+
+  /* TABLE DETAIL */
+  .table-detail {
+    display: none;
+    padding: 0 1.25rem 1.25rem;
+    border-top: 1px solid var(--border);
+    animation: fadeIn 0.15s ease;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+  .result-card.open .table-detail { display: block; }
+
+  .detail-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--muted);
+    margin: 1rem 0 0.6rem;
+  }
+
+  .seat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 6px;
+  }
+
+  .seat-pill {
+    font-size: 0.82rem;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: var(--gold-pale);
+    border: 1px solid var(--border);
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .seat-pill.highlight {
+    background: #FFF8ED;
+    border-color: var(--gold);
+    color: var(--dark);
+    font-weight: 500;
+  }
+
+  /* EMPTY */
+  .empty {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: var(--muted);
+  }
+
+  .empty-icon { font-size: 2rem; margin-bottom: 0.5rem; color: var(--gold-light); }
+  .empty p { font-size: 0.9rem; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  footer .hearts { color: var(--gold); font-size: 0.9rem; }
+
+  /* RESPONSIVE tweaks */
+  @media (max-width: 480px) {
+    .hero { padding: 2.5rem 1rem 2rem; }
+    .seat-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="hero-ornament">Bem-vindos ao nosso casamento</p>
+  <h1>Lucas <em>&</em> Sara</h1>
+  <p class="hero-sub">Campo Grande · 2025</p>
+</header>
+
+<div class="search-wrap">
+  <div class="search-box">
+    <span class="search-icon">&#9432;</span>
+    <input type="text" id="searchInput" placeholder="Digite seu nome ou o nome da família…" autocomplete="off" autocorrect="off" spellcheck="false">
+    <button class="clear-btn" id="clearBtn" aria-label="Limpar busca" style="display:none">&#x2715;</button>
+  </div>
+</div>
+
+<div class="results" id="results"></div>
+
+<footer>
+  <span class="hearts">&#9825;</span>
+</footer>
+
+<script>
+const guests = [
+  {family:"Adilson Teruya", name:"Adilson Teruya", mesa:18},
+  {family:"Adilson Teruya", name:"Janaina Teruya", mesa:18},
+  {family:"Alceu Takeda", name:"Alceu Takeda", mesa:11},
+  {family:"Alceu Takeda", name:"Kayoko Takeda", mesa:11},
+  {family:"Alessandro Akamine", name:"Alessandro Akamine", mesa:26},
+  {family:"Alessandro Akamine", name:"Viviane Akamine", mesa:26},
+  {family:"Alessandro Akamine", name:"Levi Akamine", mesa:26},
+  {family:"Alessandro Akamine", name:"Beni Akamine", mesa:26},
+  {family:"Alison Sadoyama", name:"Alison Sadoyama", mesa:27},
+  {family:"Alison Sadoyama", name:"Dani Sadoyama", mesa:27},
+  {family:"Alziro Amorim", name:"Alziro Amorim", mesa:10},
+  {family:"Alziro Amorim", name:"Tati Amorim", mesa:10},
+  {family:"Alziro Amorim", name:"Ana Amorim", mesa:10},
+  {family:"Américo Yamamoto", name:"Américo Yamamoto", mesa:11},
+  {family:"Américo Yamamoto", name:"Lindalva Yamamoto", mesa:11},
+  {family:"Ana Lucia Toma", name:"Ana Lucia Toma", mesa:18},
+  {family:"Ana Lucia Toma", name:"Renato Toma", mesa:18},
+  {family:"Andrea Moraes", name:"Andrea Moraes", mesa:11},
+  {family:"Andrea Moraes", name:"Marciel Moraes", mesa:11},
+  {family:"Andrea Moraes", name:"Manoella Moraes", mesa:11},
+  {family:"Armando Itiki", name:"Armando Itiki", mesa:25},
+  {family:"Armando Itiki", name:"Anésia Itiki", mesa:25},
+  {family:"Artur Moriya", name:"Artur Moriya", mesa:11},
+  {family:"Ayumi Aguena", name:"Ayumi Aguena", mesa:5},
+  {family:"Beatriz Miura", name:"Beatriz Miura", mesa:1},
+  {family:"Beatriz Nakasato", name:"Beatriz Nakasato", mesa:5},
+  {family:"Beatriz Nakasato", name:"Soraya Nakazato", mesa:21},
+  {family:"Beatriz Nakasato", name:"Augusto Nakazato", mesa:21},
+  {family:"Caio Kumagai", name:"Caio Kumagai", mesa:6},
+  {family:"Caio Kumagai", name:"Laura Palermo", mesa:6},
+  {family:"Cesar Nomura", name:"Cesar Nomura", mesa:17},
+  {family:"Cesar Nomura", name:"Carla Nomura", mesa:17},
+  {family:"Daniel Yanai", name:"Daniel Yanai", mesa:29},
+  {family:"Daniel Yanai", name:"Carol Yanai", mesa:29},
+  {family:"Daniel Yanai", name:"Emily Yanai", mesa:29},
+  {family:"Daniel Yanai", name:"Hannah Yanai", mesa:29},
+  {family:"Danniel Uechi", name:"Danniel Uechi", mesa:7},
+  {family:"Davi Teruya", name:"Davi Teruya", mesa:8},
+  {family:"Davi Teruya", name:"Ayumi Yamamoto", mesa:8},
+  {family:"Denis Castilho", name:"Davi Castilho", mesa:12},
+  {family:"Denis Castilho", name:"Daniel Castilho", mesa:12},
+  {family:"Diego Fernandes", name:"Diego Fernandes", mesa:25},
+  {family:"Diego Fernandes", name:"Priscila Fernandes", mesa:25},
+  {family:"Diego Fernandes", name:"Lana Fernandes", mesa:25},
+  {family:"Diego Fernandes", name:"Gigi Fernandes", mesa:25},
+  {family:"Eliana Shimano", name:"Eliana Shimano", mesa:8},
+  {family:"Enzo Kumagai", name:"Enzo Kumagai", mesa:6},
+  {family:"Ernesto Yotiro Sasai", name:"Ernesto Yotiro Sasai", mesa:20},
+  {family:"Fernanda Oshiro", name:"Fernanda Oshiro", mesa:1},
+  {family:"Fernanda Oshiro", name:"Caio Sousa", mesa:1},
+  {family:"Fernanda Sasai", name:"Fernanda Sasai", mesa:16},
+  {family:"Filipe Teruya", name:"Filipe Teruya", mesa:28},
+  {family:"Filipe Teruya", name:"Karyn Teruya", mesa:28},
+  {family:"Filipe Teruya", name:"Eric Teruya", mesa:28},
+  {family:"Gisele Tamanaka", name:"Gisele Tamanaka", mesa:4},
+  {family:"Gisele Tamanaka", name:"Fernando Brunet", mesa:4},
+  {family:"Giulia Sadoyama", name:"Giulia Sadoyama", mesa:5},
+  {family:"Gustavo Tsutsumi", name:"Gustavo Tsutsumi", mesa:12},
+  {family:"Helder Teruya", name:"Helder Teruya", mesa:2},
+  {family:"Helder Teruya", name:"Thaisa Freitas", mesa:2},
+  {family:"Henrique Nakamura", name:"Henrique Nakamura", mesa:14},
+  {family:"Henrique Nakamura", name:"Gabriela Takara", mesa:14},
+  {family:"Henrique Shuto", name:"Henrique Shuto", mesa:20},
+  {family:"Henrique Shuto", name:"Monica Shuto", mesa:20},
+  {family:"Henrique Shuto", name:"Mie Shuto", mesa:1},
+  {family:"Henrique Shuto", name:"Guilherme Shuto", mesa:7},
+  {family:"Hideki Yanai", name:"Hideki Yanai", mesa:29},
+  {family:"Hideki Yanai", name:"Michele Yanai", mesa:29},
+  {family:"Hideki Yanai", name:"Isaac Yanai", mesa:29},
+  {family:"Hideki Yanai", name:"Ellie Yanai", mesa:29},
+  {family:"Hideki Yanai", name:"Jake Yanai", mesa:29},
+  {family:"Hiroki Ando", name:"Hiroki Ando", mesa:7},
+  {family:"Hiroki Ando", name:"Bruna Ando", mesa:7},
+  {family:"Hugo Kushi", name:"Hugo Kushi", mesa:6},
+  {family:"Isabela Inagaki", name:"Isabela Inagaki", mesa:5},
+  {family:"Isabelle Shuto", name:"Isabelle Shuto", mesa:16},
+  {family:"Isabelle Shuto", name:"Vitor Shimomoto", mesa:16},
+  {family:"Isaura Naka", name:"Isaura Naka", mesa:30},
+  {family:"Isaura Tamanaka", name:"Isaura Tamanaka", mesa:10},
+  {family:"Isaura Tamanaka", name:"Guilherme Tamanaka", mesa:3},
+  {family:"Isaura Tamanaka", name:"Jennifer", mesa:3},
+  {family:"Jackson Sadoyama", name:"Jackson Sadoyama", mesa:27},
+  {family:"Jackson Sadoyama", name:"Isabela Sadoyama", mesa:27},
+  {family:"Jeanne Tamanaka", name:"Jeanne Tamanaka", mesa:4},
+  {family:"Jessica Iwanaga", name:"Jessica Iwanaga", mesa:13},
+  {family:"Jessica Iwanaga", name:"Andre Nishimura", mesa:13},
+  {family:"Joce Tamanaka", name:"Joce Tamanaka", mesa:4},
+  {family:"Joce Tamanaka", name:"Carlos Goelzer", mesa:4},
+  {family:"Joel Sadoyama", name:"Joel Sadoyama", mesa:8},
+  {family:"Joelma Tamanaka", name:"Joelma Tamanaka", mesa:4},
+  {family:"Joelma Tamanaka", name:"Amanda Tamanaka", mesa:3},
+  {family:"Joelma Tamanaka", name:"Leonardo George", mesa:3},
+  {family:"Josiane Tamanaka", name:"Josiane Tamanaka", mesa:24},
+  {family:"Josiane Tamanaka", name:"Rafael", mesa:24},
+  {family:"Josiane Tamanaka", name:"Heitor", mesa:24},
+  {family:"Juliane Tamanaka", name:"Juliane Tamanaka", mesa:24},
+  {family:"Juliane Tamanaka", name:"Lucas Murtada", mesa:24},
+  {family:"Kazuo Yanai", name:"Kazuo Yanai", mesa:19},
+  {family:"Kazuo Yanai", name:"Silvia Yanai", mesa:19},
+  {family:"Kazuo Yanai", name:"Kimiko Yanai", mesa:19},
+  {family:"Kazuo Yanai", name:"Fumito Yanai", mesa:19},
+  {family:"Kenji Umeki", name:"Kenji Umeki", mesa:14},
+  {family:"Kenji Umeki", name:"Beatriz Takano", mesa:14},
+  {family:"Kenzo Higa", name:"Kenzo Higa", mesa:6},
+  {family:"Koody Kihara", name:"Koody Kihara", mesa:27},
+  {family:"Koody Kihara", name:"Bruna Kihara", mesa:27},
+  {family:"Koody Kihara", name:"Ellen Kihara", mesa:27},
+  {family:"Koody Kihara", name:"Shun Kihara", mesa:27},
+  {family:"Larissa Taemy Kayano", name:"Larissa Taemy Kayano", mesa:1},
+  {family:"Letícia Tamanaka", name:"Letícia Tamanaka", mesa:10},
+  {family:"Letícia Tamanaka", name:"Stteferson", mesa:10},
+  {family:"Lika Hirokawa", name:"Lika Hirokawa", mesa:16},
+  {family:"Lilian Sakamoto", name:"Lilian Sakamoto", mesa:5},
+  {family:"Lucas Hiane", name:"Lucas Hiane", mesa:7},
+  {family:"Lucas Nakamura", name:"Lucas Nakamura", mesa:13},
+  {family:"Lucas Nakamura", name:"Yukari Nakamura", mesa:13},
+  {family:"Lucia Takei", name:"Lucia Takei", mesa:21},
+  {family:"Lucia Takei", name:"Edwaner Bondarczuk", mesa:21},
+  {family:"Lucia Takei", name:"Ayumi Takei", mesa:23},
+  {family:"Lucia Takei", name:"Lyoto Bondarczuk", mesa:12},
+  {family:"Lyssa Nakano", name:"Lyssa Nakano", mesa:5},
+  {family:"Marcílio Sadoyama", name:"Marcílio Sadoyama", mesa:15},
+  {family:"Marcílio Sadoyama", name:"Sueli Sadoyama", mesa:15},
+  {family:"Marco Naka", name:"Marco Naka", mesa:30},
+  {family:"Marco Naka", name:"Priscila Naka", mesa:30},
+  {family:"Marco Naka", name:"Alicia Naka", mesa:30},
+  {family:"Marcos Iseki", name:"Marcos Iseki", mesa:1},
+  {family:"Marcos Iseki", name:"Xenia Iseki", mesa:1},
+  {family:"Marcos Sadoyama", name:"Marcos Sadoyama", mesa:21},
+  {family:"Marcos Sadoyama", name:"Evelyn Sadoyama", mesa:21},
+  {family:"Marcos Yanai", name:"Marcos Yanai", mesa:29},
+  {family:"Marcos Yanai", name:"Fernanda Tunouti", mesa:29},
+  {family:"Mari Zaha", name:"Mari Zaha", mesa:21},
+  {family:"Mari Zaha", name:"Ricardo Zaha", mesa:21},
+  {family:"Mari Zaha", name:"Theo Zaha", mesa:12},
+  {family:"Mari Zaha", name:"Thie Zaha", mesa:16},
+  {family:"Mari Zaha", name:"Tae Zaha", mesa:23},
+  {family:"Mariana Midori", name:"Mariana Midori", mesa:5},
+  {family:"Mateus Tamanaka", name:"Mateus Tamanaka", mesa:24},
+  {family:"Mateus Tamanaka", name:"João Mateus Tamanaka", mesa:24},
+  {family:"Noivos", name:"Lucas", mesa:9},
+  {family:"Noivos", name:"Sara", mesa:9},
+  {family:"Olímpio Yamamoto", name:"Olimpio Yamamoto", mesa:30},
+  {family:"Olímpio Yamamoto", name:"Debora Yamamoto", mesa:30},
+  {family:"Olímpio Yamamoto", name:"Hiro Yamamoto", mesa:30},
+  {family:"Otávio Kaiya", name:"Otavio Kaiya", mesa:2},
+  {family:"Otávio Kaiya", name:"Dayara Kaiya", mesa:2},
+  {family:"Paulo Hiane", name:"Paulo Hiane", mesa:18},
+  {family:"Paulo Hiane", name:"Suzana Hiane", mesa:18},
+  {family:"Paulo Teruya", name:"Paulo Teruya", mesa:28},
+  {family:"Paulo Teruya", name:"Marcia Teruya", mesa:28},
+  {family:"Pedro Ibanhes", name:"Pedro Ibanhes", mesa:6},
+  {family:"Pr Marcos Nomura", name:"Pr Marcos Nomura", mesa:17},
+  {family:"Pr Marcos Nomura", name:"Yumi Nomura", mesa:17},
+  {family:"Pr Marcos Nomura", name:"Tais Nomura", mesa:23},
+  {family:"Pr. Manabu Kajimura", name:"Pr. Manabu Kajimura", mesa:17},
+  {family:"Pr. Manabu Kajimura", name:"Marcia Kajimura", mesa:17},
+  {family:"Pr. Vagner", name:"Pr. Vagner", mesa:15},
+  {family:"Pr. Vagner", name:"Pra. Rosana", mesa:15},
+  {family:"Rafael Sakai", name:"Rafael Sakai", mesa:2},
+  {family:"Rafaella Prado", name:"Rafaella Prado", mesa:5},
+  {family:"Renan Uechi", name:"Renan Uechi", mesa:8},
+  {family:"Renan Uechi", name:"Arissa Uechi", mesa:8},
+  {family:"Rosana Naka", name:"Rosana Naka", mesa:30},
+  {family:"Sayuri Hasegawa", name:"Sayuri Hasegawa", mesa:17},
+  {family:"Sayuri Hasegawa", name:"Emersom Hasegawa", mesa:17},
+  {family:"Sayuri Hasegawa", name:"Lissa Hasegawa", mesa:16},
+  {family:"Sayuri Hasegawa", name:"Kiyoshi Hasegawa", mesa:12},
+  {family:"Sayuri Hasegawa", name:"Missae Hirokawa", mesa:19},
+  {family:"Sayuri Hasegawa", name:"Isao Hirokawa", mesa:19},
+  {family:"Seidy Umeki", name:"Seidy Umeki", mesa:7},
+  {family:"Shigeru Hirokawa", name:"Shigeru Hirokawa", mesa:20},
+  {family:"Shigeru Hirokawa", name:"Yukie Hirokawa", mesa:20},
+  {family:"Shigeru Hirokawa", name:"Reiko Sasai", mesa:20},
+  {family:"Shigeru Hirokawa", name:"Akemi Hirokawa", mesa:22},
+  {family:"Shigeru Hirokawa", name:"Tamie Hirokawa", mesa:22},
+  {family:"Shoiti Suguimoto", name:"Shoiti Suguimoto", mesa:2},
+  {family:"Shoiti Suguimoto", name:"Paula Suguimoto", mesa:2},
+  {family:"Tadashi Hirokawa", name:"Tadashi Hirokawa", mesa:19},
+  {family:"Tadashi Hirokawa", name:"Selma Hirokawa", mesa:19},
+  {family:"Takashi Kihara", name:"Takashi Kihara", mesa:20},
+  {family:"Takashi Kihara", name:"Miyuki Kihara", mesa:20},
+  {family:"Takashi Kihara", name:"Emi Kihara", mesa:23},
+  {family:"Takashi Kihara", name:"Aya Kohara", mesa:16},
+  {family:"Takashi Kihara", name:"Koji Nakayama", mesa:16},
+  {family:"Thiago Yabuta", name:"Thiago Yabuta", mesa:14},
+  {family:"Thiago Yabuta", name:"Amanda Miwa", mesa:14},
+  {family:"Vanessa Thiyomi Kayano", name:"Vanessa Thiyomi Kayano", mesa:1},
+  {family:"Vitor Catuyama", name:"Vitor Catuyama", mesa:13},
+  {family:"Vitor Catuyama", name:"Michelle Huang", mesa:13},
+  {family:"Vitor Moriya", name:"Vitor Moriya", mesa:8},
+  {family:"Vitor Moriya", name:"Jessica Moriya", mesa:8},
+  {family:"Vitor Nomura", name:"Vitor Nomura", mesa:14},
+  {family:"Vitor Nomura", name:"Akemi Simohigashi", mesa:14},
+  {family:"Wesley Miyake", name:"Wesley Miyake", mesa:25},
+  {family:"Wesley Miyake", name:"Cibelly Miyake", mesa:25},
+  {family:"Wesley Miyake", name:"Julia Miyake", mesa:22},
+  {family:"Wesley Miyake", name:"Viviane Miyake", mesa:23},
+  {family:"Wesley Miyake", name:"Pyetro Miyake", mesa:12},
+  {family:"William Kushi", name:"William Kushi", mesa:6},
+  {family:"Wilma Sadoyama", name:"Wilma Sadoyama", mesa:18},
+  {family:"Wilma Sadoyama", name:"Humberto Chinem", mesa:18},
+  {family:"Wilsinho Iwano", name:"Wilson Iwano", mesa:28},
+  {family:"Wilsinho Iwano", name:"Carol Iwano", mesa:28},
+  {family:"Wilsinho Iwano", name:"Samuel Iwano", mesa:28},
+  {family:"Wilsinho Iwano", name:"Sarah Iwano", mesa:22},
+  {family:"Yumi Shiraishi", name:"Yumi Shiraishi", mesa:13},
+  {family:"Yumi Shiraishi", name:"Namorado", mesa:13},
+  {family:"Yuta Ogusuku", name:"Yuta Ogusuku", mesa:6},
+];
+
+function norm(s){
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+}
+
+function highlight(text, q){
+  if(!q) return text;
+  const n = norm(text), nq = norm(q);
+  const i = n.indexOf(nq);
+  if(i === -1) return text;
+  return text.slice(0,i) + '<mark>' + text.slice(i, i+q.length) + '</mark>' + text.slice(i+q.length);
+}
+
+function getMesaGuests(mesa){
+  return guests.filter(g => g.mesa === mesa);
+}
+
+function render(query){
+  const res = document.getElementById('results');
+  if(!query || query.length < 2){
+    res.innerHTML = '';
+    return;
+  }
+  const q = norm(query);
+
+  // Match by name or family
+  const matchedGuests = guests.filter(g =>
+    norm(g.name).includes(q) || norm(g.family).includes(q)
+  );
+
+  if(!matchedGuests.length){
+    res.innerHTML = `<div class="empty"><div class="empty-icon">&#9825;</div><p>Nenhum convidado encontrado para "<strong>${query}</strong>".</p><p style="margin-top:0.4rem;font-size:0.8rem">Tente o sobrenome ou o nome da família.</p></div>`;
+    return;
+  }
+
+  // Group by family+mesa combination, de-dup display
+  const seen = new Set();
+  const items = [];
+
+  matchedGuests.forEach(g => {
+    const key = g.family + '|' + g.mesa;
+    if(!seen.has(key)){
+      seen.add(key);
+      items.push({family: g.family, mesa: g.mesa, matchedName: g.name});
+    }
+  });
+
+  // Sort by mesa number
+  items.sort((a,b) => a.mesa - b.mesa);
+
+  const count = items.length;
+  res.innerHTML = `<p class="results-label">${count} resultado${count!==1?'s':''} encontrado${count!==1?'s':''}</p>` +
+    items.map((item, idx) => {
+      const mesaGuests = getMesaGuests(item.mesa);
+      const seatsHtml = mesaGuests.map(g => {
+        const isMatch = norm(g.name).includes(q) || norm(g.family).includes(q);
+        return `<div class="seat-pill ${isMatch?'highlight':''}">${isMatch ? highlight(g.name, query) : g.name}</div>`;
+      }).join('');
+
+      const familyLabel = item.family !== item.matchedName ? highlight(item.family, query) : highlight(item.matchedName, query);
+      const subLabel = item.family !== item.matchedName ? highlight(item.matchedName, query) : '';
+
+      return `
+      <div class="result-card" id="card-${idx}">
+        <div class="result-header" onclick="toggle(${idx})">
+          <div class="mesa-badge">
+            <span class="label">mesa</span>
+            <span class="num">${item.mesa}</span>
+          </div>
+          <div class="result-info">
+            <div class="result-name">${familyLabel}</div>
+            ${subLabel ? `<div class="result-meta">${subLabel}</div>` : ''}
+            <div class="result-meta">${mesaGuests.length} pessoa${mesaGuests.length!==1?'s':''} nesta mesa</div>
+          </div>
+          <span class="chevron">&#9660;</span>
+        </div>
+        <div class="table-detail">
+          <p class="detail-title">Quem está na mesa ${item.mesa}</p>
+          <div class="seat-grid">${seatsHtml}</div>
+        </div>
+      </div>`;
+    }).join('');
+}
+
+function toggle(idx){
+  const card = document.getElementById('card-'+idx);
+  card.classList.toggle('open');
+}
+
+const input = document.getElementById('searchInput');
+const clearBtn = document.getElementById('clearBtn');
+
+input.addEventListener('input', () => {
+  const q = input.value;
+  clearBtn.style.display = q ? 'block' : 'none';
+  render(q);
+});
+
+clearBtn.addEventListener('click', () => {
+  input.value = '';
+  clearBtn.style.display = 'none';
+  document.getElementById('results').innerHTML = '';
+  input.focus();
+});
+</script>
+</body>
+</html>
