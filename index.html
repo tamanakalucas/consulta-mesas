@@ -11,15 +11,19 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --gold: #B8976A;
-    --gold-light: #E8D5B0;
-    --gold-pale: #F7F0E3;
-    --dark: #1C1612;
-    --text: #2E2419;
-    --muted: #7A6A56;
-    --border: rgba(184,151,106,0.25);
-    --border-strong: rgba(184,151,106,0.5);
-    --bg: #FDFAF5;
+    --olive-900: #2F3A14;
+    --olive-800: #44531F;
+    --olive-600: #5C6B2E;
+    --olive-400: #8A9A5B;
+    --olive-200: #C7D1A8;
+    --olive-100: #DEE6C7;
+    --olive-50: #EFF3E5;
+    --dark: #1A1A1A;
+    --text: #1A1A1A;
+    --muted: #6E7860;
+    --border: rgba(92,107,46,0.22);
+    --border-strong: rgba(92,107,46,0.45);
+    --bg: #FFFFFF;
     --card: #FFFFFF;
     --radius: 12px;
   }
@@ -35,7 +39,7 @@
   .hero {
     text-align: center;
     padding: 3.5rem 1.5rem 2.5rem;
-    background: linear-gradient(180deg, #F0E6D0 0%, var(--bg) 100%);
+    background: linear-gradient(180deg, #E3E8D2 0%, var(--bg) 100%);
     border-bottom: 1px solid var(--border);
   }
 
@@ -43,7 +47,7 @@
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: clamp(0.85rem, 2vw, 1rem);
-    color: var(--gold);
+    color: var(--olive-600);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     margin-bottom: 0.75rem;
@@ -60,7 +64,7 @@
 
   .hero h1 em {
     font-style: italic;
-    color: var(--gold);
+    color: var(--olive-600);
   }
 
   .hero-sub {
@@ -89,13 +93,13 @@
   }
 
   .search-box:focus-within {
-    box-shadow: 0 0 0 3px rgba(184,151,106,0.18);
-    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(92,107,46,0.16);
+    border-color: var(--olive-600);
   }
 
   .search-icon {
     padding: 0 0 0 1.25rem;
-    color: var(--gold);
+    color: var(--olive-600);
     font-size: 1.1rem;
     pointer-events: none;
     flex-shrink: 0;
@@ -124,7 +128,7 @@
     line-height: 1;
     transition: color 0.15s;
   }
-  .clear-btn:hover { color: var(--gold); }
+  .clear-btn:hover { color: var(--olive-600); }
 
   /* RESULTS */
   .results {
@@ -152,7 +156,7 @@
 
   .result-card:hover {
     border-color: var(--border-strong);
-    box-shadow: 0 2px 16px rgba(184,151,106,0.1);
+    box-shadow: 0 2px 16px rgba(92,107,46,0.1);
   }
 
   .result-header {
@@ -169,7 +173,7 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: var(--gold-pale);
+    background: var(--olive-50);
     border: 1.5px solid var(--border-strong);
     display: flex;
     flex-direction: column;
@@ -182,7 +186,7 @@
     font-size: 0.55rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--gold);
+    color: var(--olive-600);
     font-weight: 500;
     line-height: 1;
   }
@@ -208,7 +212,7 @@
 
   .result-name mark {
     background: none;
-    color: var(--gold);
+    color: var(--olive-600);
     font-weight: 500;
   }
 
@@ -220,7 +224,7 @@
 
   .chevron {
     flex-shrink: 0;
-    color: var(--gold);
+    color: var(--olive-600);
     font-size: 0.85rem;
     transition: transform 0.2s;
   }
@@ -257,7 +261,7 @@
     font-size: 0.82rem;
     padding: 6px 10px;
     border-radius: 6px;
-    background: var(--gold-pale);
+    background: var(--olive-50);
     border: 1px solid var(--border);
     color: var(--text);
     white-space: nowrap;
@@ -266,10 +270,80 @@
   }
 
   .seat-pill.highlight {
-    background: #FFF8ED;
-    border-color: var(--gold);
-    color: var(--dark);
+    background: var(--olive-100);
+    border-color: var(--olive-600);
+    color: var(--olive-900);
     font-weight: 500;
+  }
+
+  /* VENUE MAP */
+  .venue-map-wrap {
+    margin-top: 0.5rem;
+  }
+
+  .venue-map {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .map-cell rect {
+    fill: var(--olive-50);
+    stroke: var(--border-strong);
+    stroke-width: 0.75;
+  }
+
+  .map-cell text {
+    fill: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 8px;
+    font-weight: 400;
+  }
+
+  .map-static rect {
+    fill: var(--bg);
+    stroke: var(--border);
+    stroke-width: 0.75;
+    stroke-dasharray: 2,2;
+  }
+
+  .map-static text {
+    fill: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 6.5px;
+    font-weight: 400;
+  }
+
+  .map-highlight rect {
+    fill: var(--olive-600);
+    stroke: var(--olive-900);
+    stroke-width: 1.2;
+  }
+
+  .map-highlight text {
+    fill: #FFFFFF;
+    font-weight: 500;
+    font-size: 9px;
+  }
+
+  .map-legend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 0.6rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .map-legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    background: var(--olive-600);
+    border: 1px solid var(--olive-900);
+    flex-shrink: 0;
   }
 
   /* EMPTY */
@@ -279,7 +353,7 @@
     color: var(--muted);
   }
 
-  .empty-icon { font-size: 2rem; margin-bottom: 0.5rem; color: var(--gold-light); }
+  .empty-icon { font-size: 2rem; margin-bottom: 0.5rem; color: var(--olive-200); }
   .empty p { font-size: 0.9rem; }
 
   /* FOOTER */
@@ -291,12 +365,15 @@
     letter-spacing: 0.04em;
   }
 
-  footer .hearts { color: var(--gold); font-size: 0.9rem; }
+  footer .hearts { color: var(--olive-600); font-size: 0.9rem; }
 
   /* RESPONSIVE tweaks */
   @media (max-width: 480px) {
     .hero { padding: 2.5rem 1rem 2rem; }
     .seat-grid { grid-template-columns: 1fr 1fr; }
+    .map-static text { font-size: 5.5px; }
+    .map-cell text { font-size: 7px; }
+    .map-highlight text { font-size: 8px; }
   }
 </style>
 </head>
@@ -536,6 +613,67 @@ const guests = [
   {family:"Yuta Ogusuku", name:"Yuta Ogusuku", mesa:6},
 ];
 
+/* Coordinates for the venue map (viewBox 0 0 600 300), derived from the floor plan */
+const mapTables = {
+  1:  {x:252, y:53,  w:44, h:21},
+  2:  {x:307, y:53,  w:45, h:21},
+  3:  {x:365, y:53,  w:23, h:21},
+  4:  {x:400, y:53,  w:44, h:21},
+  5:  {x:457, y:53,  w:44, h:21},
+  6:  {x:513, y:53,  w:44, h:21},
+  7:  {x:252, y:82,  w:44, h:21},
+  8:  {x:307, y:82,  w:45, h:21},
+  9:  {x:365, y:82,  w:23, h:21},
+  10: {x:400, y:82,  w:44, h:21},
+  11: {x:457, y:82,  w:44, h:21},
+  12: {x:513, y:82,  w:44, h:21},
+  13: {x:252, y:110, w:44, h:21},
+  14: {x:307, y:110, w:45, h:21},
+  15: {x:365, y:110, w:23, h:21},
+  16: {x:400, y:110, w:44, h:21},
+  17: {x:457, y:110, w:44, h:21},
+  18: {x:513, y:110, w:44, h:21},
+  19: {x:400, y:139, w:44, h:21},
+  20: {x:457, y:139, w:44, h:21},
+  21: {x:513, y:139, w:44, h:21},
+  22: {x:61,  y:160, w:45, h:19},
+  23: {x:118, y:160, w:45, h:19},
+  24: {x:174, y:160, w:45, h:19},
+  25: {x:61,  y:192, w:45, h:19},
+  26: {x:118, y:192, w:45, h:19},
+  27: {x:174, y:192, w:45, h:19},
+  28: {x:61,  y:221, w:45, h:19},
+  29: {x:118, y:221, w:45, h:19},
+  30: {x:174, y:221, w:45, h:19},
+};
+
+const mapStatic = [
+  {x:60,  y:53,  w:50,  h:48, label:"Escada"},
+  {x:110, y:53,  w:52,  h:48, label:"Foto"},
+  {x:162, y:53,  w:50,  h:48, label:"Bolo"},
+  {x:252, y:140, w:136, h:95, label:"Buffet"},
+  {x:61,  y:250, w:158, h:36, label:"Brinquedão"},
+];
+
+function svgRect(x,y,w,h,label,cls){
+  const cx = x + w/2, cy = y + h/2;
+  return `<g class="${cls}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3"></rect>` +
+    `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle">${label}</text></g>`;
+}
+
+function renderVenueMap(highlightMesa){
+  let svg = `<svg class="venue-map" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" role="img" ` +
+    `aria-label="Mapa do salão com a mesa ${highlightMesa} destacada">`;
+  mapStatic.forEach(b => { svg += svgRect(b.x, b.y, b.w, b.h, b.label, 'map-static'); });
+  for(let n = 1; n <= 30; n++){
+    const t = mapTables[n];
+    const cls = (n === highlightMesa) ? 'map-cell map-highlight' : 'map-cell';
+    svg += svgRect(t.x, t.y, t.w, t.h, n, cls);
+  }
+  svg += `</svg>`;
+  return svg;
+}
+
 function norm(s){
   return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
 }
@@ -560,7 +698,6 @@ function render(query){
   }
   const q = norm(query);
 
-  // Match by name or family
   const matchedGuests = guests.filter(g =>
     norm(g.name).includes(q) || norm(g.family).includes(q)
   );
@@ -570,7 +707,6 @@ function render(query){
     return;
   }
 
-  // Group by family+mesa combination, de-dup display
   const seen = new Set();
   const items = [];
 
@@ -582,7 +718,6 @@ function render(query){
     }
   });
 
-  // Sort by mesa number
   items.sort((a,b) => a.mesa - b.mesa);
 
   const count = items.length;
@@ -614,6 +749,11 @@ function render(query){
         <div class="table-detail">
           <p class="detail-title">Quem está na mesa ${item.mesa}</p>
           <div class="seat-grid">${seatsHtml}</div>
+          <p class="detail-title">Onde fica a mesa ${item.mesa}</p>
+          <div class="venue-map-wrap">
+            ${renderVenueMap(item.mesa)}
+            <div class="map-legend"><span class="map-legend-swatch"></span>Sua mesa</div>
+          </div>
         </div>
       </div>`;
     }).join('');
